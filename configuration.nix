@@ -93,9 +93,23 @@
 		commit-mono
   ];
 
+
+  programs.bash = {
+  	shellAliases = {
+		vi = "nvim";
+		la = "ls -la";
+		nxrs = "sudo nixos-rebuild switch";
+	};
+  };
+
+
   programs.sway = {
   	enable = true;
 	wrapperFeatures.gtk = true;
+  };
+
+  environment.variables = {
+  	EDITOR = "nvim";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
