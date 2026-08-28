@@ -1,1 +1,0 @@
-/home/donbravias/.dotfiles/laptop/nixos/configuration.nix
