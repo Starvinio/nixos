@@ -8,6 +8,9 @@
 
   programs.home-manager.enable = true;
 
+	home.packages = with pkgs; [
+	];
+
   programs.bash = {
 	  enable = true;
 
@@ -23,12 +26,40 @@
 	  };
 	};
 
-	home.packages = with pkgs; [
-	];
-
   home.sessionVariables = {
   	EDITOR = "nvim";
   	VISUAL = "nvim";
+  };
+
+  programs.git = {
+    enable = true;
+    settings = { 
+      user = {
+        name = "Starvinio";
+        email = "starvinio@proton.me";
+      };
+      init.defaultBranch = "main";
+    };
+  };
+
+  programs.ghostty = { 
+    enable = true;
+    enableBashIntegration = true;
+    settings = {
+      # font
+      font-family = "Maple Mono Normal";
+      font-size = "15.7";
+      font-feature = "-calt";
+      window-title-font-family = "Maple Mono Normal";
+
+      theme = "Sonokai";
+      window-theme = "ghostty";
+      #gtk-titlebar-hide-when-maximized = "true
+      gtk-titlebar-style = "tabs";
+      maximize = true;
+
+      mouse-hide-while-typing = true;
+    };
   };
 
   dconf.settings = {
