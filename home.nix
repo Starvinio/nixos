@@ -23,7 +23,6 @@
 
     # working environment
     neovim
-    tmux
 
     # ai stuff
     chatgpt-cli
@@ -65,6 +64,7 @@
 	  shellAliases = {
       vi = "nvim";
       la = "ls -la";
+      ".." = "cd ..";
       rebuild = "sudo nixos-rebuild switch";
       testbuild = "sudo nixos-rebuild test";
 	  };
@@ -99,7 +99,6 @@
       font-family = "Maple Mono Normal";
       font-size = 14.7;
       font-feature = "-calt";
-      window-title-font-family = "Maple Mono Normal";
 
       theme = "Tomorrow Night";
       window-theme = "ghostty";
@@ -109,7 +108,26 @@
       maximize = true;
 
       mouse-hide-while-typing = true;
+
+      keybind = [ 
+        "ctrl+shift+h=goto_split:left"
+        "ctrl+shift+j=goto_split:down"       
+        "ctrl+shift+k=goto_split:up"
+        "ctrl+shift+l=goto_split:right"       
+      ];
     };
+  };
+
+  programs.tmux = {
+    enable = true;
+
+    prefix = "C-Space";        # replaces: unbind C-b; set -g prefix C-Space
+    baseIndex = 1;              # set -g base-index 1
+    keyMode = "vi";             # set-window-option -g mode-keys vi
+    mouse = true;                # set -g mouse on
+    historyLimit = 10000;        # set -g history-limit 10000
+    escapeTime = 0;              # set -sg escape-time 0
+    terminal = "\${TERM}";       # set -g default-terminal "${TERM}"
   };
 
   programs.firefox = {
