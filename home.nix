@@ -9,14 +9,14 @@
   programs.home-manager.enable = true;
 
 	home.packages = with pkgs; [
+    prismlauncher # minecraft
 	];
 
   programs.bash = {
 	  enable = true;
 
 	  initExtra = ''
-      
-      PS1="\n\[\033[32m\]\w\n\[\033[0m\]\$ " 
+      PS1="\[\033[32m\][\W]\[\033[0m\] \[\033[1m\]λ\[\033[0m\] "
     '';
 
 	  shellAliases = {
@@ -48,17 +48,60 @@
     settings = {
       # font
       font-family = "Maple Mono Normal";
-      font-size = "15.7";
+      font-size = "14.7";
       font-feature = "-calt";
       window-title-font-family = "Maple Mono Normal";
 
-      theme = "Sonokai";
+      theme = "Tomorrow Night";
       window-theme = "ghostty";
+      background-opacity = 0.9;
       #gtk-titlebar-hide-when-maximized = "true
       gtk-titlebar-style = "tabs";
       maximize = true;
 
       mouse-hide-while-typing = true;
+    };
+  };
+
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      id = 0;
+      isDefault = true;
+
+      settings = {
+        # required for userChrome.css to be loaded at all
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+
+      userChrome = ''
+        /* Remove tab close button (the x on each tab) */
+        .tab-close-button {
+          display: none !important;
+        }
+
+        /* Remove new tab button (+ at end of tab strip) */
+        #tabs-newtab-button {
+          display: none !important;
+        }
+
+        /* Remove reload button (covers both nav-bar and urlbar placement) */
+        #reload-button,
+        #urlbar-reload-button {
+          display: none !important;
+        }
+
+        /* Remove "list all tabs" dropdown arrow */
+        #alltabs-button {
+          display: none !important;
+        }
+
+        /* Remove page back/forward buttons */
+        #back-button,
+        #forward-button {
+          display: none !important;
+        }
+      '';
     };
   };
 
@@ -105,14 +148,68 @@
     };
 
     "org/gnome/desktop/interface" = {
+      font-name = "Maple Mono 11";
+      monospace-font-name = "Maple Mono Normal, 11";
       clock-format = "24h";
+      clock-show-weekday = false;
       clock-show-date = false;
+      cursor-theme = "Bibata-Modern-Classic";
+      cursor-size = 20;
+      color-scheme = "prefer-dark";
+      show-battery-percentage = true;
+      gtk-decoration-layout = ":";
     };
 
-    "org/gnome/desktop/interface" = {
-        cursor-theme = "Bibata-Modern-Classic";
-        cursor-size = 24;
+    "org/gnome/desktop/notifications" = {
+      show-banners = false;
+      show-in-lock-screen = false;
     };
+
+
+    "org/gnome/desktop/search-providers" = {
+      disable-external = true;
+    };
+
+    "org/gnome/desktop/session" = { 
+      idle-delay = "uint32 480";
+    };
+
+    "org/gnome/settings-daemon/plugins/color" = { 
+      night-light-enabled = true;
+      night-light-temperature = "uint32 2500";
+    };
+
+  };
+
+  gtk = {
+    enable = true;
+    gtk4.extraCss = ''
+      /* 1. Hide unwanted header bar controls in Ghostty */
+      
+      /* Hide the main menu (hamburger) button */
+      window.ghostty headerbar menu-button {
+        display: none;
+      }
+
+      /* Hide the "view open tabs" / tab overview button */
+      window.ghostty headerbar button.tab-overview {
+        display: none;
+      }
+
+      /* Hide the "+" (new tab/split) button in the header bar */
+      window.ghostty headerbar button.new-tab,
+      window.ghostty headerbar button[action-name="win.new-tab"] {
+        display: none;
+      }
+
+      /* 2. Change the tab / headerbar title font to Monospace */
+      window.ghostty headerbar,
+      window.ghostty tabbar,
+      window.ghostty .tab-label {
+        font-family: "Maple Mono Normal", "JetBrains Mono", monospace;
+        font-size: 11pt;
+      }
+    '';
   };
 
 }

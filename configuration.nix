@@ -132,10 +132,14 @@
     rust-analyzer
 
     # gnome native
-    nautilus
+    nautilus      # file explorer
+    loupe         # image viewer
+    showtime      # video player
+    decibels      # audio player
     gnome-clocks
-    dconf-editor
     gnome-boxes
+    dconf-editor
+    cheese
 
     # desktop applications
     ghostty
@@ -145,11 +149,11 @@
     anki
     firefox
     obs-studio
+    localsend
 
+    # misc
     bibata-cursors
 
-    # minecraft
-    prismlauncher
   ];
 
   fonts.packages = with pkgs; [
