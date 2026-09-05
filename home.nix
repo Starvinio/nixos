@@ -9,7 +9,50 @@
   programs.home-manager.enable = true;
 
 	home.packages = with pkgs; [
-    prismlauncher # minecraft
+    # cli
+    wget
+    git
+    ripgrep
+    fastfetch
+
+    # media
+    imv
+    mpv
+    obs-studio
+    localsend
+
+    # working environment
+    neovim
+    tmux
+
+    # ai stuff
+    chatgpt-cli
+    gemini-cli
+
+    # minecraft
+    prismlauncher 
+
+    # gnome native
+    nautilus      
+    gnome-boxes
+    dconf-editor
+
+    # desktop applications
+    zathura
+    zathuraPkgs.zathura_pdf_poppler
+    anki
+
+    # programming languages
+    rustc
+    cargo
+    gcc
+    python3
+
+    # LSP
+    nil
+    clang-tools
+    lua-language-server
+    rust-analyzer
 	];
 
   programs.bash = {
@@ -23,6 +66,7 @@
       vi = "nvim";
       la = "ls -la";
       rebuild = "sudo nixos-rebuild switch";
+      testbuild = "sudo nixos-rebuild test";
 	  };
 	};
 
@@ -42,13 +86,18 @@
     };
   };
 
+  programs.tealdeer = {
+    enable = true;
+    settings.updates.auto_update = true;
+  };
+
   programs.ghostty = { 
     enable = true;
     enableBashIntegration = true;
     settings = {
       # font
       font-family = "Maple Mono Normal";
-      font-size = "14.7";
+      font-size = 14.7;
       font-feature = "-calt";
       window-title-font-family = "Maple Mono Normal";
 
@@ -103,6 +152,13 @@
         }
       '';
     };
+  };
+
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 20;
+    gtk.enable = true;
   };
 
   dconf.settings = {
@@ -178,40 +234,7 @@
       night-light-enabled = true;
       night-light-temperature = "uint32 2500";
     };
-
   };
-
-  gtk = {
-    enable = true;
-    gtk4.extraCss = ''
-      /* 1. Hide unwanted header bar controls in Ghostty */
-      
-      /* Hide the main menu (hamburger) button */
-      window.ghostty headerbar menu-button {
-        display: none;
-      }
-
-      /* Hide the "view open tabs" / tab overview button */
-      window.ghostty headerbar button.tab-overview {
-        display: none;
-      }
-
-      /* Hide the "+" (new tab/split) button in the header bar */
-      window.ghostty headerbar button.new-tab,
-      window.ghostty headerbar button[action-name="win.new-tab"] {
-        display: none;
-      }
-
-      /* 2. Change the tab / headerbar title font to Monospace */
-      window.ghostty headerbar,
-      window.ghostty tabbar,
-      window.ghostty .tab-label {
-        font-family: "Maple Mono Normal", "JetBrains Mono", monospace;
-        font-size: 11pt;
-      }
-    '';
-  };
-
 }
 
 

@@ -53,15 +53,23 @@
     "w /sys/class/power_supply/BAT0/charge_control_end_threshold - - - - 80"
   ];
 
+  virtualisation.libvirtd.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."donbravias" = {
     isNormalUser = true;
     description = "Don Bravias";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "libvirtd" ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # NOTE: Experimental Port Allowances
+  networking.firewall.allowedTCPPorts = [ 
+    25565 # Lan MC 
+    53317 # Localsend
+  ];
 	
   services.pipewire = {
   	enable = true;
@@ -107,53 +115,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  	# system / cli
-    wget
-    git
-    ripgrep
+  	# system 
     killall
-    fastfetch
-    tealdeer
-
-    # working environment
-    neovim
-    tmux
-
-    # programming languages
-    rustc
-    cargo
-    gcc
-    python3
-
-    # LSP
-    nil
-    clang-tools
-    lua-language-server
-    rust-analyzer
-
-    # gnome native
-    nautilus      # file explorer
-    loupe         # image viewer
-    showtime      # video player
-    decibels      # audio player
-    gnome-clocks
-    gnome-boxes
-    dconf-editor
-    cheese
-
-    # desktop applications
-    ghostty
-    alacritty
-    zathura
-    zathuraPkgs.zathura_pdf_poppler
-    anki
-    firefox
-    obs-studio
-    localsend
-
-    # misc
-    bibata-cursors
-
   ];
 
   fonts.packages = with pkgs; [
