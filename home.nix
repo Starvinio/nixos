@@ -21,9 +21,6 @@
     obs-studio
     localsend
 
-    # working environment
-    neovim
-
     # ai stuff
     chatgpt-cli
     gemini-cli
@@ -62,7 +59,6 @@
     '';
 
 	  shellAliases = {
-      vi = "nvim";
       la = "ls -la";
       ".." = "cd ..";
       rebuild = "sudo nixos-rebuild switch";
@@ -118,6 +114,16 @@
     };
   };
 
+  programs.neovim = {
+    enable = true;
+
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+
+    sideloadInitLua = true;   # go back to wrapping nvim with -u instead of owning init.lua
+  };
+
   programs.tmux = {
     enable = true;
 
@@ -132,9 +138,59 @@
 
   programs.firefox = {
     enable = true;
+
     profiles.default = {
       id = 0;
       isDefault = true;
+
+      search = {
+        force = true;
+        default = "ddg";
+        privateDefault = "ddg";
+
+        engines = {
+          "Nix Packages" = {
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  { name = "channel"; value = "unstable"; }
+                  { name = "query";   value = "{searchTerms}"; }
+                ];
+              }
+            ];
+            icon           = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "@np" ];
+          };
+
+          "Nix Options" = {
+            urls = [
+              {
+                template = "https://search.nixos.org/options";
+                params = [
+                  { name = "channel"; value = "unstable"; }
+                  { name = "query";   value = "{searchTerms}"; }
+                ];
+              }
+            ];
+            icon           = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "@no" ];
+          };
+
+          "NixOS Wiki" = {
+            urls = [
+              {
+                template = "https://wiki.nixos.org/w/index.php";
+                params = [
+                  { name = "search"; value = "{searchTerms}"; }
+                ];
+              }
+            ];
+            icon           = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "@nw" ];
+          };
+        };
+      };
 
       settings = {
         # required for userChrome.css to be loaded at all
