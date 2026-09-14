@@ -10,27 +10,27 @@
 
 	home.packages = with pkgs; [
     # cli
-    wget
+    #wget
     git
-    ripgrep
-    fastfetch
+    ripgrep # needed for nvim
+    gnumake
 
     # media
     imv
-    mpv
-    obs-studio
+    #mpv
+    #obs-studio
     localsend
 
     # ai stuff
-    chatgpt-cli
-    gemini-cli
+    #chatgpt-cli
+    #gemini-cli
 
     # minecraft
     prismlauncher 
 
     # gnome native
     nautilus      
-    gnome-boxes
+    #gnome-boxes
     dconf-editor
 
     # desktop applications
@@ -271,6 +271,23 @@
       close = [ "<Shift><Super>q" ];
       toggle-fullscreen = [ "<Shift><Super>f" ];
       toggle-maximized = [ "<Super>f" ];
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+      ];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      binding = "<Super>t";
+      command = "ghostty";
+      name = "open-terminal";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+      binding = "<Shift><Super>n";
+      command = "ghostty -e nvim /home/donbravias/MD/scratch.md";
+      name = "open-quicknotes";
     };
 
     "org/gnome/desktop/peripherals/mouse" = {
