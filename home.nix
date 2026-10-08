@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{config, pkgs, ... }:
 
 {
   home.username = "donbravias";
@@ -9,47 +9,75 @@
   programs.home-manager.enable = true;
 
 	home.packages = with pkgs; [
-    # cli
+  # cli
     #wget
     git
     ripgrep # needed for nvim
-    gnumake
+    htop
+    calcurse
 
-    # media
+  # media
     imv
     #mpv
     #obs-studio
     localsend
 
-    # ai stuff
+  # ai stuff
     #chatgpt-cli
     #gemini-cli
 
     # minecraft
     prismlauncher 
 
+    # steam
+    steam
+
     # gnome native
     nautilus      
-    #gnome-boxes
     dconf-editor
 
-    # desktop applications
+  # desktop applications
+    alacritty
+    anki
+    foot
+    obsidian
+
+    ## pdf files 
     zathura
     zathuraPkgs.zathura_pdf_poppler
-    anki
+    pandoc
+    texliveFull
 
-    # programming languages
-    rustc
+  # programming languages
     cargo
     gcc
+    gnumake
     python3
+    rustc
 
     # LSP
-    nil
     clang-tools
     lua-language-server
+    nil
     rust-analyzer
 	];
+
+  systemd.user.services.battery-notify = {
+    Unit.Description = "Low battery threshold notifications";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "%h/.config/sway/battery-notify.sh";
+    };
+  };
+
+  systemd.user.timers.battery-notify = {
+    Unit.Description = "Run battery-notify every minute";
+    Timer = {
+      OnBootSec = "30s";
+      OnUnitActiveSec = "60s";
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
 
   programs.bash = {
 	  enable = true;

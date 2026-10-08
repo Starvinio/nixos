@@ -53,6 +53,11 @@
     "w /sys/class/power_supply/BAT0/charge_control_end_threshold - - - - 80"
   ];
 
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";        # lid closed, no monitor -> suspend
+    HandleLidSwitchDocked = "ignore";   # lid closed, monitor attached -> do nothing
+  };
+
   virtualisation.libvirtd.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -70,6 +75,9 @@
     25565 # Lan MC 
     53317 # Localsend
   ];
+
+  # Enable C library and POSIX man pages
+  documentation.dev.enable = true;
 	
   services.pipewire = {
   	enable = true;
@@ -93,12 +101,35 @@
   };
 
 
-	services.displayManager.gdm.enable = true;
+	services.displayManager.gdm.enable = false;
+	services.displayManager.ly.enable = true;
 	services.desktopManager.gnome.enable = true;
 
 	services.gnome.core-apps.enable = false;
 	services.gnome.core-developer-tools.enable = false;
 	services.gnome.games.enable = false;
+
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+
+    extraPackages = with pkgs; [
+      brightnessctl
+      pulseaudio
+      swaylock
+      swayidle
+      wmenu
+      fuzzel
+      wl-clipboard
+      grim
+      slurp
+      gammastep
+      mako
+      libnotify
+      polkit_gnome     
+    ];
+  };
+
 
 	environment.gnome.excludePackages = with pkgs; [
 		gnome-tour
@@ -117,9 +148,13 @@
   environment.systemPackages = with pkgs; [
   	# system 
     killall
+    man-pages
+    man-pages-posix
+    bluez
   ];
 
   fonts.packages = with pkgs; [
+    iosevka
 		jetbrains-mono
 		maple-mono.truetype
 		maple-mono.Normal-TTF
